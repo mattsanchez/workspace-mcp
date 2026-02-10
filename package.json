@@ -1,8 +1,12 @@
 {
-  "name": "workspace-mcp",
+  "name": "@ottocode-agent/workspace-mcp",
   "version": "1.0.0",
   "type": "module",
   "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client/index.ts"
+  },
   "scripts": {
     "dev": "bun run src/index.ts",
     "start": "bun run src/index.ts",
