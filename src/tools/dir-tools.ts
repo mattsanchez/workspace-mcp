@@ -2,9 +2,9 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
 import {
-  workspaceIdSchema,
   pathSchema,
   recursiveSchema,
+  workspaceIdSchema,
 } from "../util/schemas.ts";
 
 export function registerDirTools(

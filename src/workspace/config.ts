@@ -26,5 +26,5 @@ export async function saveConfig(
 ): Promise<void> {
   await mkdir(configDir, { recursive: true });
   const configPath = join(configDir, CONFIG_FILENAME);
-  await Bun.write(configPath, JSON.stringify(config, null, 2) + "\n");
+  await Bun.write(configPath, `${JSON.stringify(config, null, 2)  }\n`);
 }

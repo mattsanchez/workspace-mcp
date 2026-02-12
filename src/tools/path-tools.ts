@@ -2,7 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
-import { workspaceIdSchema, pathSchema } from "../util/schemas.ts";
+import { pathSchema, workspaceIdSchema } from "../util/schemas.ts";
 
 export function registerPathTools(
   server: McpServer,

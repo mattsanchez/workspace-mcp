@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "bun:test";
+import { beforeEach, describe, expect, it } from "bun:test";
 import { RemoteWorkspaceFS } from "./remote-workspace-fs.ts";
 import type { McpToolCaller } from "./remote-workspace-fs.ts";
 

@@ -1,12 +1,12 @@
 import * as posix from "node:path/posix";
 import type {
-  IFileSystem,
-  FsStat,
   BufferEncoding,
+  CpOptions,
   FileContent,
+  FsStat,
+  IFileSystem,
   MkdirOptions,
   RmOptions,
-  CpOptions,
 } from "just-bash";
 
 // These types exist in just-bash's fs/interface but are not re-exported
@@ -37,7 +37,7 @@ export interface McpToolCaller {
     resultSchema?: unknown,
     options?: unknown,
   ): Promise<{
-    content: Array<{ type: string; text?: string; [key: string]: unknown }>;
+    content: { type: string; text?: string; [key: string]: unknown }[];
     isError?: boolean;
     [key: string]: unknown;
   }>;

@@ -1,5 +1,4 @@
-import { ReadWriteFs, OverlayFs } from "just-bash";
-import type { IFileSystem, OverlayFsOptions } from "just-bash";
+import { OverlayFs, ReadWriteFs, type IFileSystem, type OverlayFsOptions } from "just-bash";
 import { loadConfig, saveConfig } from "./config.ts";
 import type {
   WorkspaceConfigFile,
@@ -7,8 +6,8 @@ import type {
   WorkspaceMetadata,
 } from "./types.ts";
 import {
-  WorkspaceNotFoundError,
   WorkspaceExistsError,
+  WorkspaceNotFoundError,
 } from "../util/errors.ts";
 
 export class WorkspaceManager {

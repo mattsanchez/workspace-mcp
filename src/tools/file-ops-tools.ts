@@ -3,10 +3,10 @@ import { z } from "zod";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
 import {
-  workspaceIdSchema,
+  forceSchema,
   pathSchema,
   recursiveSchema,
-  forceSchema,
+  workspaceIdSchema,
 } from "../util/schemas.ts";
 
 export function registerFileOpsTools(

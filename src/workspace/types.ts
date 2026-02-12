@@ -1,4 +1,4 @@
-import type { ReadWriteFsOptions, OverlayFsOptions } from "just-bash";
+import type { OverlayFsOptions, ReadWriteFsOptions } from "just-bash";
 
 export type FsBackend = "read-write" | "overlay";
 
