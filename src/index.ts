@@ -24,7 +24,7 @@ if (defaultName && defaultDir) {
 const server = createServer(manager);
 
 if (transport === "http") {
-  startHttpServer(server, port);
+  await startHttpServer(server, port);
 } else {
   const stdio = createStdioTransport();
   await server.connect(stdio);

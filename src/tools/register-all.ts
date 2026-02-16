@@ -7,6 +7,8 @@ import { registerDirTools } from "./dir-tools.ts";
 import { registerFileOpsTools } from "./file-ops-tools.ts";
 import { registerLinkTools } from "./link-tools.ts";
 import { registerPathTools } from "./path-tools.ts";
+import { registerEditTools } from "./edit-tools.ts";
+import { registerSearchTools } from "./search-tools.ts";
 
 export function registerAllTools(
   server: McpServer,
@@ -19,4 +21,6 @@ export function registerAllTools(
   registerFileOpsTools(server, manager);
   registerLinkTools(server, manager);
   registerPathTools(server, manager);
+  registerEditTools(server, manager);
+  registerSearchTools(server, manager);
 }
