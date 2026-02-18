@@ -39,7 +39,7 @@ export function registerWorkspaceTools(
           .string()
           .optional()
           .describe(
-            "Virtual mount point (overlay backend only, default: /home/user/project)",
+            "Virtual mount point (overlay backend only, default: /)",
           ),
         read_only: z
           .boolean()
