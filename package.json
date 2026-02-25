@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "bun run src/index.ts",
     "start": "bun run src/index.ts",
+    "inspect": "NODE_TLS_REJECT_UNAUTHORIZED=0 npx @modelcontextprotocol/inspector bun run src/index.ts",
     "typecheck": "tsc --noEmit",
     "build": "bun run build:macos && bun run build:linux && bun run build:windows",
     "build:macos": "bun build --compile --target=bun-darwin-arm64 src/index.ts --outfile dist/workspace-mcp-darwin-arm64 && bun build --compile --target=bun-darwin-x64 src/index.ts --outfile dist/workspace-mcp-darwin-x64",

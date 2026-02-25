@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WorkspaceManager } from "./workspace/manager.ts";
 import { registerAllTools } from "./tools/register-all.ts";
+import { registerWorkspaceResources } from "./resources/workspace-resources.ts";
 
 export function createServer(manager: WorkspaceManager): McpServer {
   const server = new McpServer({
@@ -9,6 +10,7 @@ export function createServer(manager: WorkspaceManager): McpServer {
   });
 
   registerAllTools(server, manager);
+  registerWorkspaceResources(server, manager);
 
   return server;
 }
