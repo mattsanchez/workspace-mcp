@@ -11,7 +11,8 @@ export function registerFileReadTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_read_file",
     {
       title: "Read File",
@@ -29,7 +30,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, encoding }) => {
+    async ({ workspace_id, path, encoding }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const content = await fs.readFile(
@@ -43,7 +44,7 @@ export function registerFileReadTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_read_file_buffer",
     {
       title: "Read File Buffer",
@@ -60,7 +61,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const buffer = await fs.readFileBuffer(path);
@@ -79,7 +80,7 @@ export function registerFileReadTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_exists",
     {
       title: "Check Path Exists",
@@ -96,7 +97,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const exists = await fs.exists(path);
@@ -109,7 +110,7 @@ export function registerFileReadTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_stat",
     {
       title: "File Stat",
@@ -126,7 +127,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const stat = await fs.stat(path);
@@ -139,7 +140,7 @@ export function registerFileReadTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_lstat",
     {
       title: "File Lstat",
@@ -156,7 +157,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const stat = await fs.lstat(path);

@@ -8,7 +8,8 @@ export function registerWorkspaceTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_workspace_create",
     {
       title: "Create Workspace",
@@ -51,7 +52,7 @@ export function registerWorkspaceTools(
           .positive()
           .optional()
           .describe("Maximum file read size in bytes (default: 10MB)"),
-      },
+      } as any,
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -67,7 +68,7 @@ export function registerWorkspaceTools(
       mount_point,
       read_only,
       max_file_read_size,
-    }) => {
+    }: any) => {
       try {
         const meta = await manager.createWorkspace({
           id,
@@ -87,7 +88,7 @@ export function registerWorkspaceTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_workspace_list",
     {
       title: "List Workspaces",
@@ -114,7 +115,7 @@ export function registerWorkspaceTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_workspace_info",
     {
       title: "Workspace Info",
@@ -130,7 +131,7 @@ export function registerWorkspaceTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id }) => {
+    async ({ workspace_id }: any) => {
       try {
         const meta = manager.getWorkspace(workspace_id);
         return {
@@ -142,7 +143,7 @@ export function registerWorkspaceTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_workspace_delete",
     {
       title: "Delete Workspace",
@@ -158,7 +159,7 @@ export function registerWorkspaceTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id }) => {
+    async ({ workspace_id }: any) => {
       try {
         await manager.deleteWorkspace(workspace_id);
         return {

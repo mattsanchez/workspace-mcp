@@ -13,7 +13,8 @@ export function registerFileOpsTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_rm",
     {
       title: "Remove File or Directory",
@@ -32,7 +33,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, recursive, force }) => {
+    async ({ workspace_id, path, recursive, force }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.rm(path, { recursive, force });
@@ -45,7 +46,7 @@ export function registerFileOpsTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_cp",
     {
       title: "Copy File or Directory",
@@ -64,7 +65,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, src, dest, recursive }) => {
+    async ({ workspace_id, src, dest, recursive }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.cp(src, dest, recursive ? { recursive } : undefined);
@@ -77,7 +78,7 @@ export function registerFileOpsTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_mv",
     {
       title: "Move/Rename",
@@ -95,7 +96,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, src, dest }) => {
+    async ({ workspace_id, src, dest }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.mv(src, dest);
@@ -108,7 +109,7 @@ export function registerFileOpsTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_chmod",
     {
       title: "Change Permissions",
@@ -125,7 +126,7 @@ export function registerFileOpsTools(
           .describe(
             "File mode as a number (e.g., 493 = 0o755 = rwxr-xr-x, 420 = 0o644 = rw-r--r--)",
           ),
-      },
+      } as any,
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -133,7 +134,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, mode }) => {
+    async ({ workspace_id, path, mode }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.chmod(path, mode);

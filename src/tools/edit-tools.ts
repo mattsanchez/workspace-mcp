@@ -43,7 +43,8 @@ export function registerEditTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_edit",
     {
       title: "Edit File",
@@ -63,7 +64,7 @@ export function registerEditTools(
           .describe(
             "Replace all occurrences instead of requiring unique match",
           ),
-      },
+      } as any,
       annotations: {
         readOnlyHint: false,
         destructiveHint: false,
@@ -71,7 +72,7 @@ export function registerEditTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, old_string, new_string, replace_all }) => {
+    async ({ workspace_id, path, old_string, new_string, replace_all }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const { count } = await performEdit(

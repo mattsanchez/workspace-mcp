@@ -11,7 +11,8 @@ export function registerDirTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_mkdir",
     {
       title: "Create Directory",
@@ -29,7 +30,7 @@ export function registerDirTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, recursive }) => {
+    async ({ workspace_id, path, recursive }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.mkdir(path, recursive ? { recursive } : undefined);
@@ -42,7 +43,7 @@ export function registerDirTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_readdir",
     {
       title: "List Directory",
@@ -59,7 +60,7 @@ export function registerDirTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const entries = await fs.readdir(path);
@@ -74,7 +75,7 @@ export function registerDirTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_readdir_with_types",
     {
       title: "List Directory with Types",
@@ -91,7 +92,7 @@ export function registerDirTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         if (fs.readdirWithFileTypes) {

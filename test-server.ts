@@ -40,16 +40,25 @@ let workspaceId: string | undefined;
 
 const args = process.argv.slice(2);
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === "--remote") {
+  const currentArg = args[i];
+  if (!currentArg) {
+    continue;
+  }
+
+  if (currentArg === "--remote") {
     mode = "remote";
     // Next arg might be a params file (if it doesn't start with --)
-    if (args[i + 1] && !args[i + 1].startsWith("--")) {
-      paramsPath = resolve(args[++i]);
+    const nextArg = args[i + 1];
+    if (nextArg && !nextArg.startsWith("--")) {
+      paramsPath = resolve(args[++i]!);
     }
-  } else if (args[i] === "--workspace-dir") {
-    workspaceDir = resolve(args[++i]);
-  } else if (!args[i].startsWith("--")) {
-    workspaceId = args[i];
+  } else if (currentArg === "--workspace-dir") {
+    const nextArg = args[i + 1];
+    if (nextArg) {
+      workspaceDir = resolve(args[++i]!);
+    }
+  } else if (!currentArg.startsWith("--")) {
+    workspaceId = currentArg;
   }
 }
 

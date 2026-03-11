@@ -7,7 +7,8 @@ export function registerLinkTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_symlink",
     {
       title: "Create Symbolic Link",
@@ -27,7 +28,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, target, link_path }) => {
+    async ({ workspace_id, target, link_path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.symlink(target, link_path);
@@ -45,7 +46,7 @@ export function registerLinkTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_link",
     {
       title: "Create Hard Link",
@@ -65,7 +66,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, existing_path, new_path }) => {
+    async ({ workspace_id, existing_path, new_path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.link(existing_path, new_path);
@@ -83,7 +84,7 @@ export function registerLinkTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_readlink",
     {
       title: "Read Symbolic Link",
@@ -100,7 +101,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const target = await fs.readlink(path);
@@ -113,7 +114,7 @@ export function registerLinkTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_realpath",
     {
       title: "Resolve Real Path",
@@ -130,7 +131,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }) => {
+    async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const resolved = await fs.realpath(path);

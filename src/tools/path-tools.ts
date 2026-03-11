@@ -8,7 +8,8 @@ export function registerPathTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_resolve_path",
     {
       title: "Resolve Path",
@@ -26,7 +27,7 @@ export function registerPathTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, base, path }) => {
+    async ({ workspace_id, base, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const resolved = fs.resolvePath(base, path);
@@ -39,7 +40,7 @@ export function registerPathTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_get_all_paths",
     {
       title: "Get All Paths",
@@ -55,7 +56,7 @@ export function registerPathTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id }) => {
+    async ({ workspace_id }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const paths = fs.getAllPaths();
@@ -68,7 +69,7 @@ export function registerPathTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_utimes",
     {
       title: "Update Timestamps",
@@ -91,7 +92,7 @@ export function registerPathTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, atime, mtime }) => {
+    async ({ workspace_id, path, atime, mtime }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.utimes(path, new Date(atime), new Date(mtime));

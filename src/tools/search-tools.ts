@@ -347,8 +347,9 @@ export function registerSearchTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
+  const registerTool = server.registerTool.bind(server) as any;
   // ws_glob registration
-  server.registerTool(
+  registerTool(
     "ws_glob",
     {
       title: "Find Files by Pattern",
@@ -374,7 +375,7 @@ export function registerSearchTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, pattern, path }) => {
+    async ({ workspace_id, pattern, path }: any) => {
       try {
         const meta = manager.getWorkspace(workspace_id);
         const result = await globWorkspace(meta.rootPath, pattern, path);
@@ -401,7 +402,7 @@ export function registerSearchTools(
   );
 
   // ws_grep registration
-  server.registerTool(
+  registerTool(
     "ws_grep",
     {
       title: "Search File Contents",
@@ -475,7 +476,7 @@ export function registerSearchTools(
           .optional()
           .default(true)
           .describe("Show line numbers in content mode"),
-      },
+      } as any,
       annotations: {
         readOnlyHint: true,
         destructiveHint: false,
@@ -483,7 +484,7 @@ export function registerSearchTools(
         openWorldHint: false,
       },
     },
-    async (params) => {
+    async (params: any) => {
       try {
         const fs = manager.getFs(params.workspace_id);
         const contextB =

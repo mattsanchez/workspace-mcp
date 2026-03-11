@@ -12,7 +12,8 @@ export function registerFileWriteTools(
   server: McpServer,
   manager: WorkspaceManager,
 ): void {
-  server.registerTool(
+  const registerTool = server.registerTool.bind(server) as any;
+  registerTool(
     "ws_write_file",
     {
       title: "Write File",
@@ -31,7 +32,7 @@ export function registerFileWriteTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, content, encoding }) => {
+    async ({ workspace_id, path, content, encoding }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.writeFile(path, content, encoding ? { encoding } : undefined);
@@ -44,7 +45,7 @@ export function registerFileWriteTools(
     },
   );
 
-  server.registerTool(
+  registerTool(
     "ws_append_file",
     {
       title: "Append to File",
@@ -63,7 +64,7 @@ export function registerFileWriteTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, content, encoding }) => {
+    async ({ workspace_id, path, content, encoding }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.appendFile(
