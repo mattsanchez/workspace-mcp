@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { OverlayFs, ReadWriteFs, type IFileSystem, type OverlayFsOptions } from "just-bash";
 import { loadConfig, saveConfig } from "./config.ts";
 import type {
@@ -22,8 +23,18 @@ export class WorkspaceManager {
 
   async init(): Promise<void> {
     this.config = await loadConfig(this.configDir);
+    let pruned = false;
     for (const meta of Object.values(this.config.workspaces)) {
+      if (!existsSync(meta.rootPath)) {
+        console.error(`workspace "${meta.id}": root path no longer exists (${meta.rootPath}), removing`);
+        delete this.config.workspaces[meta.id];
+        pruned = true;
+        continue;
+      }
       this.filesystems.set(meta.id, this.createFs(meta));
+    }
+    if (pruned) {
+      await saveConfig(this.configDir, this.config);
     }
   }
 
