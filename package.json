@@ -1,15 +1,27 @@
 {
-  "name": "@ottocode-agent/workspace-mcp",
+  "name": "@mattsanchez/workspace-mcp",
   "version": "1.0.0",
   "type": "module",
-  "private": true,
+  "description": "MCP server for workspace file operations — read, write, edit, search, and manage files across sandboxed workspaces",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattsanchez/workspace-mcp.git"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./client": "./src/client/index.ts"
   },
+  "files": [
+    "src",
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "dev": "bun run src/index.ts",
     "start": "bun run src/index.ts",
+    "test": "bun test",
     "inspect": "NODE_TLS_REJECT_UNAUTHORIZED=0 npx @modelcontextprotocol/inspector bun run src/index.ts",
     "typecheck": "tsc --noEmit",
     "build": "bun run build:macos && bun run build:linux && bun run build:windows",
