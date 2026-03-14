@@ -9,8 +9,16 @@
     "url": "git+https://github.com/mattsanchez/workspace-mcp.git"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./client": "./src/client/index.ts"
+    ".": {
+      "bun": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "bun": "./src/client/index.ts",
+      "import": "./dist/client/index.js",
+      "types": "./dist/client/index.d.ts"
+    }
   },
   "files": [
     "src",
@@ -24,6 +32,8 @@
     "test": "bun test",
     "inspect": "NODE_TLS_REJECT_UNAUTHORIZED=0 npx @modelcontextprotocol/inspector bun run src/index.ts",
     "typecheck": "tsc --noEmit",
+    "compile": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "tsc -p tsconfig.build.json",
     "build": "bun run build:macos && bun run build:linux && bun run build:windows",
     "build:macos": "bun build --compile --target=bun-darwin-arm64 src/index.ts --outfile dist/workspace-mcp-darwin-arm64 && bun build --compile --target=bun-darwin-x64 src/index.ts --outfile dist/workspace-mcp-darwin-x64",
     "build:linux": "bun build --compile --target=bun-linux-arm64 src/index.ts --outfile dist/workspace-mcp-linux-arm64 && bun build --compile --target=bun-linux-x64 src/index.ts --outfile dist/workspace-mcp-linux-x64",
@@ -37,6 +47,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/node": "^25.5.0",
     "typescript": "^5.9.3"
   }
 }
