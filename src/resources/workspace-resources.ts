@@ -1,5 +1,6 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WorkspaceManager } from "../workspace/manager.ts";
+import { getLogger } from "../util/logger.ts";
 
 /**
  * Register workspace:// resource handlers on the MCP server.
@@ -18,6 +19,7 @@ export function registerWorkspaceResources(
     new ResourceTemplate("workspace://{+path}", { list: undefined }),
     { description: "Read a file from the workspace filesystem" },
     async (uri, variables) => {
+      getLogger().debug({ uri: uri.href }, "resource access");
       const filePath = "/" + (variables.path as string);
       const fs = manager.getFs(undefined);
       const content = await fs.readFile(filePath);

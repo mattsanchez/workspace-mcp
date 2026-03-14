@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import {
   encodingSchema,
   pathSchema,
@@ -30,7 +31,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, encoding }: any) => {
+    withLogging("ws_read_file", async ({ workspace_id, path, encoding }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const content = await fs.readFile(
@@ -41,7 +42,7 @@ export function registerFileReadTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -61,7 +62,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_read_file_buffer", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const buffer = await fs.readFileBuffer(path);
@@ -77,7 +78,7 @@ export function registerFileReadTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -97,7 +98,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_exists", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const exists = await fs.exists(path);
@@ -107,7 +108,7 @@ export function registerFileReadTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -127,7 +128,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_stat", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const stat = await fs.stat(path);
@@ -137,7 +138,7 @@ export function registerFileReadTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -157,7 +158,7 @@ export function registerFileReadTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_lstat", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const stat = await fs.lstat(path);
@@ -167,6 +168,6 @@ export function registerFileReadTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import {
   encodingSchema,
   pathSchema,
@@ -32,7 +33,7 @@ export function registerFileWriteTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, content, encoding }: any) => {
+    withLogging("ws_write_file", async ({ workspace_id, path, content, encoding }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.writeFile(path, content, encoding ? { encoding } : undefined);
@@ -42,7 +43,7 @@ export function registerFileWriteTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -64,7 +65,7 @@ export function registerFileWriteTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, content, encoding }: any) => {
+    withLogging("ws_append_file", async ({ workspace_id, path, content, encoding }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.appendFile(
@@ -78,6 +79,6 @@ export function registerFileWriteTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

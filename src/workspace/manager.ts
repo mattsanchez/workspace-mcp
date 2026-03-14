@@ -10,6 +10,7 @@ import {
   WorkspaceExistsError,
   WorkspaceNotFoundError,
 } from "../util/errors.ts";
+import { getLogger } from "../util/logger.ts";
 
 export class WorkspaceManager {
   private configDir: string;
@@ -26,7 +27,7 @@ export class WorkspaceManager {
     let pruned = false;
     for (const meta of Object.values(this.config.workspaces)) {
       if (!existsSync(meta.rootPath)) {
-        console.error(`workspace "${meta.id}": root path no longer exists (${meta.rootPath}), removing`);
+        getLogger().warn({ id: meta.id, rootPath: meta.rootPath }, "workspace pruned: root path no longer exists");
         delete this.config.workspaces[meta.id];
         pruned = true;
         continue;
@@ -129,6 +130,7 @@ export class WorkspaceManager {
     this.config.workspaces[params.id] = meta;
     this.filesystems.set(params.id, this.createFs(meta));
     await saveConfig(this.configDir, this.config);
+    getLogger().info({ id: params.id, rootPath: params.rootPath, fsBackend: params.fsBackend }, "workspace created");
     return meta;
   }
 
@@ -140,6 +142,7 @@ export class WorkspaceManager {
     delete this.config.workspaces[id];
     this.filesystems.delete(id);
     await saveConfig(this.configDir, this.config);
+    getLogger().info({ id }, "workspace deleted");
   }
 
   private createFs(meta: WorkspaceMetadata): IFileSystem {

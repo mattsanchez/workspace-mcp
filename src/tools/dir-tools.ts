@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import {
   pathSchema,
   recursiveSchema,
@@ -30,7 +31,7 @@ export function registerDirTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, recursive }: any) => {
+    withLogging("ws_mkdir", async ({ workspace_id, path, recursive }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.mkdir(path, recursive ? { recursive } : undefined);
@@ -40,7 +41,7 @@ export function registerDirTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -60,7 +61,7 @@ export function registerDirTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_readdir", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const entries = await fs.readdir(path);
@@ -72,7 +73,7 @@ export function registerDirTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -92,7 +93,7 @@ export function registerDirTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_readdir_with_types", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         if (fs.readdirWithFileTypes) {
@@ -125,6 +126,6 @@ export function registerDirTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

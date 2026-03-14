@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
+import { getLogger } from "../util/logger.ts";
 
 export async function startHttpServer(server: McpServer, port: number): Promise<void> {
   // Use stateful mode so a single transport can handle multiple requests.
@@ -15,6 +16,7 @@ export async function startHttpServer(server: McpServer, port: number): Promise<
     port,
     async fetch(req) {
       const url = new URL(req.url);
+      getLogger().debug({ method: req.method, path: url.pathname }, "http request");
 
       if (url.pathname === "/mcp") {
         return transport.handleRequest(req);
@@ -30,5 +32,5 @@ export async function startHttpServer(server: McpServer, port: number): Promise<
     },
   });
 
-  console.error(`Workspace MCP server listening on http://localhost:${port}/mcp`);
+  getLogger().info({ transport: "http", port }, "server started");
 }

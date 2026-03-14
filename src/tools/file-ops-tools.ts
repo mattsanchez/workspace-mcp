@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import {
   forceSchema,
   pathSchema,
@@ -33,7 +34,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, recursive, force }: any) => {
+    withLogging("ws_rm", async ({ workspace_id, path, recursive, force }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.rm(path, { recursive, force });
@@ -43,7 +44,7 @@ export function registerFileOpsTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -65,7 +66,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, src, dest, recursive }: any) => {
+    withLogging("ws_cp", async ({ workspace_id, src, dest, recursive }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.cp(src, dest, recursive ? { recursive } : undefined);
@@ -75,7 +76,7 @@ export function registerFileOpsTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -96,7 +97,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, src, dest }: any) => {
+    withLogging("ws_mv", async ({ workspace_id, src, dest }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.mv(src, dest);
@@ -106,7 +107,7 @@ export function registerFileOpsTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -134,7 +135,7 @@ export function registerFileOpsTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, mode }: any) => {
+    withLogging("ws_chmod", async ({ workspace_id, path, mode }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.chmod(path, mode);
@@ -149,6 +150,6 @@ export function registerFileOpsTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

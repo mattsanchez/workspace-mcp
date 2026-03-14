@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import { pathSchema, workspaceIdSchema } from "../util/schemas.ts";
 
 export function registerPathTools(
@@ -27,7 +28,7 @@ export function registerPathTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, base, path }: any) => {
+    withLogging("ws_resolve_path", async ({ workspace_id, base, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const resolved = fs.resolvePath(base, path);
@@ -37,7 +38,7 @@ export function registerPathTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -56,7 +57,7 @@ export function registerPathTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id }: any) => {
+    withLogging("ws_get_all_paths", async ({ workspace_id }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const paths = fs.getAllPaths();
@@ -66,7 +67,7 @@ export function registerPathTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -92,7 +93,7 @@ export function registerPathTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, atime, mtime }: any) => {
+    withLogging("ws_utimes", async ({ workspace_id, path, atime, mtime }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.utimes(path, new Date(atime), new Date(mtime));
@@ -104,6 +105,6 @@ export function registerPathTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

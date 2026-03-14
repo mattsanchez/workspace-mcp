@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { IFileSystem } from "just-bash";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import { pathSchema, workspaceIdSchema } from "../util/schemas.ts";
 
 /**
@@ -72,7 +73,7 @@ export function registerEditTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path, old_string, new_string, replace_all }: any) => {
+    withLogging("ws_edit", async ({ workspace_id, path, old_string, new_string, replace_all }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const { count } = await performEdit(
@@ -93,6 +94,6 @@ export function registerEditTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

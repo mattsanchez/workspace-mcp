@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import { pathSchema, workspaceIdSchema } from "../util/schemas.ts";
 
 export function registerLinkTools(
@@ -28,7 +29,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, target, link_path }: any) => {
+    withLogging("ws_symlink", async ({ workspace_id, target, link_path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.symlink(target, link_path);
@@ -43,7 +44,7 @@ export function registerLinkTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -66,7 +67,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, existing_path, new_path }: any) => {
+    withLogging("ws_link", async ({ workspace_id, existing_path, new_path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         await fs.link(existing_path, new_path);
@@ -81,7 +82,7 @@ export function registerLinkTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -101,7 +102,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_readlink", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const target = await fs.readlink(path);
@@ -111,7 +112,7 @@ export function registerLinkTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -131,7 +132,7 @@ export function registerLinkTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, path }: any) => {
+    withLogging("ws_realpath", async ({ workspace_id, path }: any) => {
       try {
         const fs = manager.getFs(workspace_id);
         const resolved = await fs.realpath(path);
@@ -141,6 +142,6 @@ export function registerLinkTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

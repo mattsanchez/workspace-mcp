@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import { workspaceIdSchema } from "../util/schemas.ts";
 
 export function registerWorkspaceTools(
@@ -60,7 +61,7 @@ export function registerWorkspaceTools(
         openWorldHint: false,
       },
     },
-    async ({
+    withLogging("ws_workspace_create", async ({
       id,
       name,
       root_path,
@@ -85,7 +86,7 @@ export function registerWorkspaceTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -101,7 +102,7 @@ export function registerWorkspaceTools(
         openWorldHint: false,
       },
     },
-    async () => {
+    withLogging("ws_workspace_list", async () => {
       try {
         const workspaces = manager.listWorkspaces();
         return {
@@ -112,7 +113,7 @@ export function registerWorkspaceTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -131,7 +132,7 @@ export function registerWorkspaceTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id }: any) => {
+    withLogging("ws_workspace_info", async ({ workspace_id }: any) => {
       try {
         const meta = manager.getWorkspace(workspace_id);
         return {
@@ -140,7 +141,7 @@ export function registerWorkspaceTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   registerTool(
@@ -159,7 +160,7 @@ export function registerWorkspaceTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id }: any) => {
+    withLogging("ws_workspace_delete", async ({ workspace_id }: any) => {
       try {
         await manager.deleteWorkspace(workspace_id);
         return {
@@ -173,6 +174,6 @@ export function registerWorkspaceTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }

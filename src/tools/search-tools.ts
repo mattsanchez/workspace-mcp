@@ -4,6 +4,7 @@ import * as posix from "node:path/posix";
 import type { IFileSystem } from "just-bash";
 import type { WorkspaceManager } from "../workspace/manager.ts";
 import { toMcpError } from "../util/errors.ts";
+import { withLogging } from "../util/logger.ts";
 import { workspaceIdSchema } from "../util/schemas.ts";
 import {
   sanitizeGlobPattern,
@@ -375,7 +376,7 @@ export function registerSearchTools(
         openWorldHint: false,
       },
     },
-    async ({ workspace_id, pattern, path }: any) => {
+    withLogging("ws_glob", async ({ workspace_id, pattern, path }: any) => {
       try {
         const meta = manager.getWorkspace(workspace_id);
         const result = await globWorkspace(meta.rootPath, pattern, path);
@@ -398,7 +399,7 @@ export function registerSearchTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 
   // ws_grep registration
@@ -484,7 +485,7 @@ export function registerSearchTools(
         openWorldHint: false,
       },
     },
-    async (params: any) => {
+    withLogging("ws_grep", async (params: any) => {
       try {
         const fs = manager.getFs(params.workspace_id);
         const contextB =
@@ -509,6 +510,6 @@ export function registerSearchTools(
       } catch (err) {
         return toMcpError(err);
       }
-    },
+    }),
   );
 }
