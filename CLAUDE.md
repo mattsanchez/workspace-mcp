@@ -38,6 +38,7 @@ HTTP mode: `TRANSPORT=http PORT=3100 bun run dev`
 
 - All filesystem paths are sanitized in `src/util/sanitize.ts` — no `..` traversal allowed, glob patterns validated
 - Tool annotations declare `readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint` per MCP spec
+- All tool handlers are wrapped with `withLogging()` from `src/util/logger.ts` for structured entry/error logging via pino
 - Tests live in `__tests__/` directories alongside implementation, use `bun:test`, and create temp directories or use `InMemoryFs` for isolation
 - `test-server.ts` at the root is a smoke test that validates tools and resources end-to-end
 
@@ -50,3 +51,5 @@ HTTP mode: `TRANSPORT=http PORT=3100 bun run dev`
 | `PORT` | `3100` | HTTP port |
 | `DEFAULT_WORKSPACE_NAME` | — | Pre-configure default workspace name |
 | `DEFAULT_WORKSPACE_DIR` | — | Pre-configure default workspace directory |
+| `LOG_LEVEL` | `info` | Log verbosity: `debug`, `info`, `warn`, `error` |
+| `LOG_FILE` | — | Log file path; defaults to stderr |
