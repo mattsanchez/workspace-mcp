@@ -8,6 +8,9 @@
     "type": "git",
     "url": "git+https://github.com/mattsanchez/workspace-mcp.git"
   },
+  "bin": {
+    "workspace-mcp": "./dist/index.js"
+  },
   "exports": {
     ".": {
       "bun": "./src/index.ts",
