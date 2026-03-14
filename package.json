@@ -1,6 +1,6 @@
 {
   "name": "@mattsanchez/workspace-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "MCP server for workspace file operations — read, write, edit, search, and manage files across sandboxed workspaces",
   "license": "Apache-2.0",
